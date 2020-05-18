@@ -2,7 +2,7 @@ sudo: required
 services:
   - docker
 before_install:
-  - docker buikt -t olyabelome/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t olyabelome/react-test -f ./client/Dockerfile.dev ./client
 script:
   - docker run -e CI=true olyabelome/react-test npm run test
 after_success:
