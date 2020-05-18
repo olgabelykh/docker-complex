@@ -1,0 +1,17 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker buikt -t olyabelome/react-test -f ./client/Dockerfile.dev ./client
+script:
+  - docker run -e CI=true olyabelome/react-test npm run test
+after_success:
+  - docker build -t olyabelome/complex-client ./client
+  - docker build -t olyabelome/complex-nginx ./nginx
+  - docker build -t olyabelome/complex-server ./server
+  - docker build -t olyabelome/complex-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push olyabelome/complex-client
+  - docker push olyabelome/complex-nginx
+  - docker push olyabelome/complex-server
+  - docker push olyabelome/complex-worker
